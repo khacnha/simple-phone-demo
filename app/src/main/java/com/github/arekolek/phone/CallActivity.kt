@@ -3,10 +3,13 @@ package com.github.arekolek.phone
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.telecom.Call
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_call.*
@@ -49,6 +52,32 @@ class CallActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun updateUi(state: Int) {
+
+        closeBanner.setOnClickListener {
+            popupBanner.visibility = View.GONE
+        }
+        Glide.with(this)
+            .load("https://previews.123rf.com/images/garagestock/garagestock1701/garagestock170124577/69379761-technology-concept-banner-demo.jpg")
+//            .listener(object: RequestListener<Drawable> {
+//                override fun onLoadFailed(e: GlideException?, model: Any?, target: com.bumptech.glide.request.target.Target<Drawable>?, isFirstResource: Boolean): Boolean {
+//                    print("IMG ERR")
+//                    return false
+//                }
+//                override fun onResourceReady(
+//                    resource: Drawable?,
+//                    model: Any?,
+//                    target: com.bumptech.glide.request.target.Target<Drawable>?,
+//                    dataSource: com.bumptech.glide.load.DataSource?,
+//                    isFirstResource: Boolean
+//                ): Boolean {
+//                    print("IMG OK")
+//                    popupBanner.visibility = View.VISIBLE
+//                    return true
+//                }
+//            })
+            .into(banner)
+        popupBanner.isVisible = state == Call.STATE_RINGING
+
         callInfo.text = "${state.asString().toLowerCase().capitalize()}\n$number"
 
         answer.isVisible = state == Call.STATE_RINGING
